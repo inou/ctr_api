@@ -1,2 +1,2 @@
 ExUnit.start()
-Mox.defmock(CtrApi.ClientMox, for: CtrApi)
+Hammox.defmock(CtrApi.ClientMox, for: CtrApi)

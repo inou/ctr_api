@@ -2,36 +2,35 @@ defmodule CtrApiTest do
   use ExUnit.Case
 
   alias CtrApi.Client
+  alias CtrApi.User
 
-  test "get_users/0" do
-    assert [] = Client.get_users()
-  end
+  import Hammox
+
+  setup :verify_on_exit!
 
   test "get_user/1" do
-    assert nil = Client.get_user(1)
+    CtrApi.ClientMox
+    |> Hammox.expect(:user, fn _ -> {:ok, u2()} end)
+
+    assert {:ok, u2()} == Client.get_user("1")
   end
 
-  test "GET /users via clients with hammox", %{conn: _conn} do
-    Hammox.expect(ClientMox, :users, fn ->
-      {:ok, ["joe", "jim"]}
-    end)
-    {:ok, clients} = Client.get_users()
-    assert length(clients) == 2
+  # Broken, fix as a exercise, good version above
+  # test "get_user/1 2" do
+  #   CtrApi.ClientMox
+  #   |> Hammox.expect(:user, fn _ -> u2() end)
+
+  #   assert u1() == Client.get_user()
+  # end
+
+  test "GET /users via clients with hammox" do
+    CtrApi.ClientMox
+    |> Hammox.expect(:users, fn -> {:ok, [u1()]} end)
+
+    {:ok, users} = Client.get_users()
+    assert length(users) == 1
   end
 
-  test "GET /users via clients with hammox 1", %{conn: _conn} do
-    Hammox.expect(ClientMox, :users, fn ->
-      {:ok, [%{name: "joe", balance: 3.4}, %{name: "jim", balance: "3.4"}]}
-    end)
-    {:ok, clients} = Client.get_users()
-    assert length(clients) == 2
-  end
-
-  test "GET /users via clients with hammox 2", %{conn: _conn} do
-    Hammox.expect(ClientMox, :users, fn ->
-      {:ok, [%User{name: "joe", balance: 4.33}, %User{name: "jim", balance: 2.3}]}
-    end)
-    {:ok, clients} = Client.get_users()
-    assert length(clients) == 2
-  end
+  defp u1, do: %User{name: "test", balance: 1.2}
+  defp u2, do: %User{name: "single", balance: 3.34}
 end
