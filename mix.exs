@@ -21,6 +21,7 @@ defmodule CtrApi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ecto_sql, "~> 3.4"},
       {:jason, "~> 1.0"},
       {:tesla, "~> 1.0"},
       {:hammox, "~> 0.5", only: :test}

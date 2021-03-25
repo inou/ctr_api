@@ -4,7 +4,7 @@ defmodule CtrApi.ClientImpl do
 
   alias CtrApi.User
 
-  plug Tesla.Middleware.BaseUrl, Application.get_env(:ctr_api, CtrApi).url
+  plug Tesla.Middleware.BaseUrl, Application.get_env(:ctr_api, CtrApi)[:url]
   plug Tesla.Middleware.JSON
 
   def users do
