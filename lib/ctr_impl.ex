@@ -1,4 +1,4 @@
-defmodule CtrApi.Impl do
+defmodule CtrApi.ClientImpl do
   @behaviour CtrApi
   use Tesla
 
